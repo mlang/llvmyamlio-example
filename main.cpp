@@ -4,16 +4,15 @@ struct Foo {
   int size;
 };
 
-namespace llvm { namespace yaml {
-
-  template <>
-  struct MappingTraits<Foo> {
-    static void mapping(IO &io, Foo &foo) {
-      io.mapOptional("size",      foo.size);
-    }
-  };
-
-}}
+namespace llvm {
+  namespace yaml {
+    template <> struct MappingTraits<::Foo> {
+      static void mapping(yaml::IO &io, ::Foo &foo) {
+        io.mapOptional("size",      foo.size);
+      }
+    };
+  }
+}
 
 int main()
 {
