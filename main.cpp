@@ -1,14 +1,16 @@
 #include <llvm/Support/YAMLTraits.h>
 
-struct Foo {
-  int size;
+struct configuration {
+  std::string braille_locale = "Unicode-Braille";
+  int width = 32;
 };
 
 namespace llvm {
   namespace yaml {
-    template <> struct MappingTraits<::Foo> {
-      static void mapping(yaml::IO &io, ::Foo &foo) {
-        io.mapOptional("size",      foo.size);
+    template <> struct MappingTraits<::configuration> {
+      static void mapping(yaml::IO &io, ::configuration &conf) {
+        io.mapOptional("braille_locale", conf.braille_locale);
+        io.mapOptional("width",          conf.width);
       }
     };
   }
@@ -16,9 +18,9 @@ namespace llvm {
 
 int main()
 {
-  Foo foo { 1 };
+  configuration conf;
   llvm::yaml::Output yout(llvm::outs());
-  yout << foo;
+  yout << conf;
 
   return EXIT_SUCCESS;
 }
